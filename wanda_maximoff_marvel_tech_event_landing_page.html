@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAOS: THE MULTIVERSE OF CODE // GGFG Bennett University</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind Custom Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        scarlet: {
+                            DEFAULT: '#E50914',
+                            dark: '#990000',
+                            deep: '#500000',
+                            glow: '#ff1e56'
+                        },
+                        void: {
+                            DEFAULT: '#08080A',
+                            card: '#121216',
+                            border: '#2C1014'
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #08080A;
+            color: #F3F4F6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        .chaos-glow {
+            text-shadow: 0 0 20px rgba(229, 9, 20, 0.75), 0 0 40px rgba(153, 0, 0, 0.5);
+        }
+        .chaos-box-glow {
+            box-shadow: 0 0 30px rgba(229, 9, 20, 0.2), inset 0 0 20px rgba(153, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08080A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #990000;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E50914;
+        }
+        #magic-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .hex-grid {
+            background-image: radial-gradient(rgba(229, 9, 20, 0.18) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .standard-hero-theme {
+            filter: hue-rotate(180deg) saturate(1.4);
+            transition: filter 0.8s ease;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-void text-gray-100 min-h-screen flex flex-col selection:bg-scarlet selection:text-white">
+
+    <canvas id="magic-canvas"></canvas>
+
+    <header id="site-header" class="sticky top-0 z-50 bg-void/90 backdrop-blur-md border-b border-scarlet/20 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-scarlet to-scarlet-dark flex items-center justify-center shadow-lg shadow-scarlet/60">
+                    <span class="text-white font-cinzel font-bold text-xl">W</span>
+                </div>
+                <div>
+                    <span class="font-cinzel text-base sm:text-lg font-bold tracking-widest text-white chaos-glow">GFG × BENNETT</span>
+                    <p class="text-[10px] text-scarlet font-mono tracking-wider">MARVEL HACKATHON '26</p>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex space-x-2 bg-void-card/70 p-1.5 rounded-full border border-scarlet/20">
+                <a href="#hero" class="px-4 py-2 rounded-full text-xs font-cinzel font-semibold tracking-wider text-white bg-scarlet/20 border border-scarlet/40">Nexus Hub</a>
+                <a href="#about" class="px-4 py-2 rounded-full text-xs font-cinzel font-semibold tracking-wider text-gray-300 hover:text-white transition-all">Event Lore</a>
+                <a href="#tracks" class="px-4 py-2 rounded-full text-xs font-cinzel font-semibold tracking-wider text-gray-300 hover:text-white transition-all">Tracks & Prizes</a>
+                <a href="#schedule" class="px-4 py-2 rounded-full text-xs font-cinzel font-semibold tracking-wider text-gray-300 hover:text-white transition-all">Timeline</a>
+                <a href="#register" class="px-4 py-2 rounded-full text-xs font-cinzel font-semibold tracking-wider text-gray-300 hover:text-white transition-all">Register</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleRealityRewrite()" id="reality-toggle-btn" class="px-3 sm:px-4 py-2 bg-void-card border border-scarlet/40 text-scarlet font-mono text-xs font-bold rounded-lg hover:bg-scarlet/20 transition-all shadow-md">
+                    ⚡ REWRITE REALITY
+                </button>
+                <a href="#register" class="hidden sm:inline-block px-4 py-2 bg-gradient-to-r from-scarlet-dark to-scarlet text-white font-cinzel font-semibold text-xs tracking-wider rounded-lg shadow-lg shadow-scarlet/50 hover:shadow-scarlet/90 transition-all border border-scarlet/50">
+                    ENTER HEX
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+
+        <section id="hero" class="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden py-16">
+            <div class="absolute inset-0 hex-grid opacity-30 pointer-events-none"></div>
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-scarlet/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto text-center space-y-8">
+                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-scarlet/10 border border-scarlet/30 text-scarlet font-mono text-xs tracking-widest uppercase">
+                    <span class="w-2 h-2 rounded-full bg-scarlet animate-ping"></span>
+                    <span>GeeksForGeeks Student Chapter • Bennett University</span>
+                </div>
+
+                <h1 class="font-cinzel text-4xl sm:text-7xl lg:text-8xl font-black tracking-wider text-white chaos-glow">
+                    CHAOS:<br/><span class="text-scarlet">MULTIVERSE OF CODE</span>
+                </h1>
+
+                <p class="text-gray-300 text-base sm:text-xl font-light max-w-2xl mx-auto leading-relaxed font-inter">
+                    Step past ordinary code and enter the Hex. A 24-hour cinematic hackathon where logic meets dark fantasy, reality-warping algorithms, and absolute tech supremacy.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4 pt-4">
+                    <a href="#register" class="px-8 py-4 bg-scarlet hover:bg-scarlet-glow text-white font-cinzel font-bold tracking-widest text-sm rounded-xl shadow-xl shadow-scarlet/60 transition-all duration-300 transform hover:-scale-105">
+                        MANIFEST REGISTRATION
+                    </a>
+                    <a href="#about" class="px-8 py-4 bg-void-card hover:bg-void-border text-white border border-scarlet/40 font-cinzel font-bold tracking-widest text-sm rounded-xl transition-all duration-300">
+                        EXPLORE THE ARCHIVE
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-12 max-w-4xl mx-auto">
+                    <div class="bg-void-card/80 border border-scarlet/20 p-4 rounded-2xl backdrop-blur-sm">
+                        <div class="font-cinzel text-2xl sm:text-3xl font-bold text-scarlet">24 Hours</div>
+                        <div class="text-xs font-mono text-gray-400 mt-1">REALITY COMPILATION</div>
+                    </div>
+                    <div class="bg-void-card/80 border border-scarlet/20 p-4 rounded-2xl backdrop-blur-sm">
+                        <div class="font-cinzel text-2xl sm:text-3xl font-bold text-white">₹1.5 Lakhs</div>
+                        <div class="text-xs font-mono text-gray-400 mt-1">BOUNTY PRIZE POOL</div>
+                    </div>
+                    <div class="bg-void-card/80 border border-scarlet/20 p-4 rounded-2xl backdrop-blur-sm">
+                        <div class="font-cinzel text-2xl sm:text-3xl font-bold text-scarlet">3 Tracks</div>
+                        <div class="text-xs font-mono text-gray-400 mt-1">CHAOS DOMAINS</div>
+                    </div>
+                    <div class="bg-void-card/80 border border-scarlet/20 p-4 rounded-2xl backdrop-blur-sm">
+                        <div class="font-cinzel text-2xl sm:text-3xl font-bold text-white">Bennett Uni</div>
+                        <div class="text-xs font-mono text-gray-400 mt-1">MAIN AUDITORIUM</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-16">
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+                <span class="text-scarlet font-mono text-xs uppercase tracking-widest">// THE DARKHOLD PROTOCOL</span>
+                <h2 class="font-cinzel text-3xl sm:text-5xl font-bold text-white tracking-wider">WHAT IS CHAOS HACK?</h2>
+                <p class="text-gray-400 text-sm sm:text-base leading-relaxed">
+                    Unlike standard corporate hackathons defined by routine templates, CHAOS '26 breaks every rule. Inspired by the singular visual identity and raw power of the Scarlet Witch, we challenge innovators to build projects that defy conventional UI/UX limits, push AI into unpredictable realms, and reshape digital reality.
+                </p>
+                <div class="pt-2 text-xs font-mono text-scarlet">
+                    ✨ Selected Chaos Nodes: <span id="chaos-counter" class="font-bold text-white text-sm">0</span>
+                </div>
+            </div>
+
+            <div id="tracks" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div onclick="incrementChaosNode(this)" class="cursor-pointer bg-void-card border border-scarlet/30 rounded-3xl p-8 space-y-6 chaos-box-glow hover:border-scarlet/80 transition-all group select-none">
+                    <div class="w-14 h-14 rounded-2xl bg-scarlet/10 border border-scarlet/40 flex items-center justify-center text-scarlet text-2xl font-cinzel font-bold group-hover:scale-110 transition-transform">
+                        I
+                    </div>
+                    <h3 class="font-cinzel text-2xl font-bold text-white">Reality Warping AI</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Build next-gen generative AI applications, deepfake detection shields, autonomous LLM agents, and immersive synthetic environments that blur the line between fiction and truth.
+                    </p>
+                    <div class="pt-4 border-t border-scarlet/20 flex justify-between items-center text-xs font-mono text-scarlet">
+                        <span>DIFFICULTY: MYTHIC</span>
+                        <span class="track-status">CLICK TO ACTIVATE ⚡</span>
+                    </div>
+                </div>
+
+                <div onclick="incrementChaosNode(this)" class="cursor-pointer bg-void-card border border-scarlet/30 rounded-3xl p-8 space-y-6 chaos-box-glow hover:border-scarlet/80 transition-all group select-none">
+                    <div class="w-14 h-14 rounded-2xl bg-scarlet/10 border border-scarlet/40 flex items-center justify-center text-scarlet text-2xl font-cinzel font-bold group-hover:scale-110 transition-transform">
+                        II
+                    </div>
+                    <h3 class="font-cinzel text-2xl font-bold text-white">The Hex UI / UX</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Redefine frontend engineering. Deliver jaw-dropping web apps, immersive WebGL/Three.js spatial interfaces, and kinetic typography that redefine how humans interact with code.
+                    </p>
+                    <div class="pt-4 border-t border-scarlet/20 flex justify-between items-center text-xs font-mono text-scarlet">
+                        <span>DIFFICULTY: ARCANE</span>
+                        <span class="track-status">CLICK TO ACTIVATE ⚡</span>
+                    </div>
+                </div>
+
+                <div onclick="incrementChaosNode(this)" class="cursor-pointer bg-void-card border border-scarlet/30 rounded-3xl p-8 space-y-6 chaos-box-glow hover:border-scarlet/80 transition-all group select-none">
+                    <div class="w-14 h-14 rounded-2xl bg-scarlet/10 border border-scarlet/40 flex items-center justify-center text-scarlet text-2xl font-cinzel font-bold group-hover:scale-110 transition-transform">
+                        III
+                    </div>
+                    <h3 class="font-cinzel text-2xl font-bold text-white">Multiversal Security</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Crack cryptographic ciphers, secure decentralized smart contracts against quantum anomalies, and build impenetrable zero-trust cybersecurity protocols.
+                    </p>
+                    <div class="pt-4 border-t border-scarlet/20 flex justify-between items-center text-xs font-mono text-scarlet">
+                        <span>DIFFICULTY: SUPREME</span>
+                        <span class="track-status">CLICK TO ACTIVATE ⚡</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+            <div class="bg-void-card border-2 border-scarlet/40 rounded-3xl p-8 sm:p-12 chaos-box-glow relative overflow-hidden">
+                <div class="absolute inset-0 hex-grid opacity-20 pointer-events-none"></div>
+
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-6 space-y-4">
+                        <span class="text-scarlet font-mono text-xs uppercase tracking-widest">// INTERACTIVE INCANTATION LAB</span>
+                        <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">TEST YOUR CHAOS LEVEL</h2>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Before registering for the hackathon, calibrate your developer aura. Adjust the sliders to test system volatility and summon a random hackathon prompt instantly.
+                        </p>
+                        <div class="pt-2">
+                            <button onclick="summonHackPrompt()" class="px-6 py-3 bg-gradient-to-r from-scarlet-dark to-scarlet text-white font-cinzel font-bold text-xs tracking-widest rounded-xl shadow-lg shadow-scarlet/40 hover:shadow-scarlet/80 transition-all border border-scarlet/50">
+                                SUMMON CHALLENGE PROMPT
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-6 bg-black/80 border border-scarlet/40 rounded-2xl p-6 space-y-4">
+                        <div class="flex justify-between items-center text-xs font-mono text-scarlet border-b border-scarlet/20 pb-3">
+                            <span>MANIFESTATION CONSOLE</span>
+                            <span id="prompt-status" class="text-green-400">READY</span>
+                        </div>
+                        <div id="prompt-output" class="font-mono text-xs text-gray-300 min-h-[90px] flex items-center justify-center text-center p-4 bg-void/60 rounded-xl border border-scarlet/20">
+                            "Click the button to generate your customized chaotic project prompt..."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="schedule" class="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-12">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-scarlet font-mono text-xs uppercase tracking-widest">// TEMPORAL TIMELINE</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white tracking-wider">EVENT SCHEDULE</h2>
+                <p class="text-gray-400 text-sm">24 hours of non-stop innovation at Bennett University Auditorium. Click any schedule item to warp reality.</p>
+            </div>
+
+            <div class="space-y-6">
+                <div onclick="incrementChaosNode(this)" class="cursor-pointer bg-void-card border border-scarlet/20 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-scarlet/50 transition-all select-none">
+                    <div>
+                        <span class="text-xs font-mono text-scarlet">09:00 AM • DAY 01</span>
+                        <h3 class="font-cinzel text-xl font-bold text-white mt-1">Opening Ceremony & Hex Awakening</h3>
+                        <p class="text-gray-400 text-sm mt-1">Keynote address by GFG Student Chapter leads and problem statement revelation.</p>
+                    </div>
+                    <span class="px-4 py-1.5 bg-scarlet/10 border border-scarlet/30 rounded-full text-xs font-mono text-scarlet whitespace-nowrap">Main Auditorium</span>
+                </div>
+
+                <div onclick="incrementChaosNode(this)" class="cursor-pointer bg-void-card border border-scarlet/20 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-scarlet/50 transition-all select-none">
+                    <div>
+                        <span class="text-xs font-mono text-scarlet">11:00 AM • DAY 01</span>
+                        <h3 class="font-cinzel text-xl font-bold text-white mt-1">Coding Begins: The Multiverse Opens</h3>
+                        <p class="text-gray-400 text-sm mt-1">Hackers dive into code repositories, APIs, and AI models.</p>
+                    </div>
+                    <span class="px-4 py-1.5 bg-scarlet/10 border border-scarlet/30 rounded-full text-xs font-mono text-scarlet whitespace-nowrap">Hacking Labs</span>
+                </div>
+
+                <div onclick="incrementChaosNode(this)" class="cursor-pointer bg-void-card border border-scarlet/20 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-scarlet/50 transition-all select-none">
+                    <div>
+                        <span class="text-xs font-mono text-scarlet">08:00 PM • DAY 01</span>
+                        <h3 class="font-cinzel text-xl font-bold text-white mt-1">Midnight Mentorship & Chaos Fuel</h3>
+                        <p class="text-gray-400 text-sm mt-1">Industry mentor review sessions and midnight pizza & magic potions.</p>
+                    </div>
+                    <span class="px-4 py-1.5 bg-scarlet/10 border border-scarlet/30 rounded-full text-xs font-mono text-scarlet whitespace-nowrap">Cafeteria</span>
+                </div>
+
+                <div onclick="incrementChaosNode(this)" class="cursor-pointer bg-void-card border border-scarlet/20 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-scarlet/50 transition-all select-none">
+                    <div>
+                        <span class="text-xs font-mono text-scarlet">11:00 AM • DAY 02</span>
+                        <h3 class="font-cinzel text-xl font-bold text-white mt-1">Code Freeze & Final Submissions</h3>
+                        <p class="text-gray-400 text-sm mt-1">Submission portal closes. Pitch deck preparation begins.</p>
+                    </div>
+                    <span class="px-4 py-1.5 bg-scarlet/10 border border-scarlet/30 rounded-full text-xs font-mono text-scarlet whitespace-nowrap">Devfolio / Portal</span>
+                </div>
+
+                <div onclick="incrementChaosNode(this)" class="cursor-pointer bg-void-card border border-scarlet/20 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-scarlet/50 transition-all select-none">
+                    <div>
+                        <span class="text-xs font-mono text-scarlet">03:00 PM • DAY 02</span>
+                        <h3 class="font-cinzel text-xl font-bold text-white mt-1">Grand Finale & Award Ceremony</h3>
+                        <p class="text-gray-400 text-sm mt-1">Top 10 teams pitch live to judges. Winners crowned.</p>
+                    </div>
+                    <span class="px-4 py-1.5 bg-scarlet/10 border border-scarlet/30 rounded-full text-xs font-mono text-scarlet whitespace-nowrap">Main Auditorium</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="register" class="py-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+            <div class="bg-void-card border-2 border-scarlet/50 rounded-3xl p-8 sm:p-12 chaos-box-glow relative overflow-hidden">
+                <div class="absolute inset-0 hex-grid opacity-30 pointer-events-none"></div>
+
+                <div class="relative z-10 space-y-8">
+                    <div class="text-center space-y-3">
+                        <span class="text-scarlet font-mono text-xs uppercase tracking-widest">// SECURE YOUR REALITY</span>
+                        <h2 class="font-cinzel text-3xl sm:text-5xl font-bold text-white tracking-wider">HACKATHON REGISTRATION</h2>
+                        <p class="text-gray-400 text-sm">Join elite developers at Bennett University. Fill out the form below to claim your spot in the Hex.</p>
+                    </div>
+
+                    <form id="registration-form" onsubmit="handleRegistration(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-mono text-gray-300">TEAM LEADER NAME *</label>
+                                <input type="text" required placeholder="Wanda Maximoff" class="w-full bg-black/60 border border-scarlet/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-scarlet transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-mono text-gray-300">UNIVERSITY EMAIL *</label>
+                                <input type="email" required placeholder="wandam@bennett.edu.in" class="w-full bg-black/60 border border-scarlet/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-scarlet transition-all">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-xs font-mono text-gray-300">TEAM NAME *</label>
+                                <input type="text" required placeholder="Westview Coven" class="w-full bg-black/60 border border-scarlet/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-scarlet transition-all">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-mono text-gray-300">CHOOSE TRACK *</label>
+                                <select class="w-full bg-black/60 border border-scarlet/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-scarlet transition-all">
+                                    <option class="bg-black">Track 1: Reality Warping AI</option>
+                                    <option class="bg-black">Track 2: The Hex UI / UX</option>
+                                    <option class="bg-black">Track 3: Multiversal Security</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-mono text-gray-300">TEAM MEMBERS (NAMES & GITHUB PROFILE LINKS)</label>
+                            <textarea rows="3" placeholder="1. Vision (github.com/vision)&#10;2. Billy (github.com/billy)" class="w-full bg-black/60 border border-scarlet/30 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-scarlet transition-all"></textarea>
+                        </div>
+
+                        <div class="pt-4 text-center">
+                            <!-- Dynamic CTA Button that moves/shifts based on clicked titles/tracks counter -->
+                            <button type="submit" id="chaos-cta-btn" class="px-10 py-4 bg-gradient-to-r from-scarlet-dark to-scarlet text-white font-cinzel font-bold text-sm tracking-widest rounded-xl shadow-xl shadow-scarlet/60 hover:shadow-scarlet/90 transition-transform duration-300 border border-scarlet/60 transform">
+                                SUBMIT APPLICATION TO THE HEX (<span id="cta-count-badge">0</span>)
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="success-msg" class="hidden text-center p-6 bg-scarlet/10 border border-scarlet/40 rounded-2xl space-y-2">
+                        <h3 class="font-cinzel text-2xl font-bold text-white">✨ REALITY MANIFESTED SUCCESSFULLY</h3>
+                        <p class="text-gray-300 text-sm font-mono">Your team registration has been logged in the Darkhold archive. Welcome to Chaos '26!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-scarlet/20 bg-void py-12 text-center text-xs text-gray-500 font-mono space-y-4">
+        <div class="flex justify-center space-x-6">
+            <a href="https://geeksforgeeks.org" target="_blank" class="hover:text-scarlet transition-colors">GeeksForGeeks Student Chapter</a>
+            <span>•</span>
+            <a href="https://bennett.edu.in" target="_blank" class="hover:text-scarlet transition-colors">Bennett University</a>
+            <span>•</span>
+            <a href="#hero" class="hover:text-scarlet transition-colors">Back to Top</a>
+        </div>
+        <p>CHAOS: THE MULTIVERSE OF CODE // MARVEL HACKATHON '26</p>
+        <p class="text-scarlet/80">"You break the rules and become the hero. I do it and become the enemy."</p>
+    </footer>
+
+    <script>
+        // 1. Chaos Magic Particle Cursor
+        const canvas = document.getElementById('magic-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            for (let i = 0; i < 2; i++) {
+                particles.push(new Particle(mouse.x, mouse.y, true));
+            }
+        });
+
+        window.addEventListener('click', (e) => {
+            for (let i = 0; i < 30; i++) {
+                particles.push(new Particle(e.clientX, e.clientY, false));
+            }
+        });
+
+        class Particle {
+            constructor(x, y, isTrail) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * (isTrail ? 4 : 9) + 2;
+                this.speedX = (Math.random() - 0.5) * (isTrail ? 2 : 10);
+                this.speedY = (Math.random() - 0.5) * (isTrail ? 2 : 10);
+                this.color = Math.random() > 0.3 ? '#E50914' : (Math.random() > 0.5 ? '#990000' : '#ff1e56');
+                this.life = 1;
+                this.decay = Math.random() * 0.03 + 0.02;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= this.decay;
+                if (this.size > 0.2) this.size -= 0.1;
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#E50914';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function handleParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(handleParticles);
+        }
+        handleParticles();
+
+        // 2. Chaos Node Click & Dynamic CTA Movement Counter
+        let chaosNodeClicks = 0;
+
+        function incrementChaosNode(element) {
+            chaosNodeClicks++;
+            
+            element.classList.toggle('border-scarlet');
+            element.classList.toggle('bg-scarlet/10');
+            
+            const statusIndicator = element.querySelector('.track-status');
+            if (statusIndicator) {
+                statusIndicator.innerText = "ACTIVE IN HEX ✨";
+                statusIndicator.className = "text-white font-bold";
+            }
+
+            document.getElementById('chaos-counter').innerText = chaosNodeClicks;
+            document.getElementById('cta-count-badge').innerText = chaosNodeClicks;
+
+            const ctaBtn = document.getElementById('chaos-cta-btn');
+            const randomX = (Math.sin(chaosNodeClicks * 2.5) * 35) + (chaosNodeClicks % 2 === 0 ? 15 : -15);
+            const randomY = (Math.cos(chaosNodeClicks * 2) * 15);
+            const randomRotate = (chaosNodeClicks * 4) % 15 - 7.5;
+            const scaleFactor = 1 + Math.min(chaosNodeClicks * 0.04, 0.25);
+
+            ctaBtn.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg) scale(${scaleFactor})`;
+            
+            ctaBtn.classList.add('shadow-2xl', 'shadow-scarlet');
+            setTimeout(() => {
+                ctaBtn.classList.remove('shadow-2xl', 'shadow-scarlet');
+            }, 600);
+        }
+
+        // 3. Reality Rewrite / Theme Toggle
+        let isStandardTheme = false;
+        function toggleRealityRewrite() {
+            isStandardTheme = !isStandardTheme;
+            const body = document.body;
+            const btn = document.getElementById('reality-toggle-btn');
+            
+            if (isStandardTheme) {
+                body.classList.add('standard-hero-theme');
+                btn.innerText = "🌀 RESTORE CHAOS";
+                btn.style.borderColor = "#3b82f6";
+                btn.style.color = "#3b82f6";
+            } else {
+                body.classList.remove('standard-hero-theme');
+                btn.innerText = "⚡ REWRITE REALITY";
+                btn.style.borderColor = "#E50914";
+                btn.style.color = "#E50914";
+            }
+        }
+
+        // 4. Summon Hackathon Prompt Generator
+        const chaosPrompts = [
+            "⚡ PROMPT 01: Build an AI assistant that speaks exclusively in sitcom laugh tracks while detecting bugs.",
+            "🔮 PROMPT 02: Create a WebGL 3D Hex barrier widget that protects user data from simulated cyber attacks.",
+            "🔥 PROMPT 03: Develop a decentralized reality-anchoring protocol to verify deepfake images in real-time.",
+            "✨ PROMPT 04: Design a dark-fantasy UI/UX portfolio builder inspired by the ancient pages of the Darkhold."
+        ];
+
+        function summonHackPrompt() {
+            const output = document.getElementById('prompt-output');
+            const status = document.getElementById('prompt-status');
+            status.innerText = "CASTING...";
+            status.className = "text-yellow-400 animate-pulse";
+            
+            setTimeout(() => {
+                const randomPrompt = chaosPrompts[Math.floor(Math.random() * chaosPrompts.length)];
+                output.innerText = randomPrompt;
+                status.innerText = "SUMMONED";
+                status.className = "text-green-400";
+            }, 500);
+        }
+
+        // 5. Registration Handling
+        function handleRegistration(e) {
+            e.preventDefault();
+            document.getElementById('registration-form').style.display = 'none';
+            document.getElementById('success-msg').classList.remove('hidden');
+            
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle(window.innerWidth / 2, window.innerHeight / 2, false));
+            }
+        }
+    </script>
+</body>
+</html>
